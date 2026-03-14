@@ -1,0 +1,86 @@
+Q.1) Write Ajax program to fetch suggestions when user is typing in a textbox (eg like Google suggestions). Hint: create array of suggestions and matching string will be displayed.
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>AJAX Auto Suggestions Example</title>
+
+<script>
+
+function fetchSuggestions(str){
+
+if(str.length == 0){
+document.getElementById("suggestions").innerHTML = "";
+return;
+}
+
+var suggestions = ["apple","banana","cherry","dates","elderberry","fig","grape","honeydew","kiwi","lemon"];
+
+var matches = [];
+
+for(var i = 0; i < suggestions.length; i++){
+
+if(suggestions[i].toLowerCase().startsWith(str.toLowerCase())){
+
+matches.push(suggestions[i]);
+
+}
+
+}
+
+if(matches.length > 0){
+
+document.getElementById("suggestions").innerHTML = matches.join("<br>");
+
+}
+else{
+
+document.getElementById("suggestions").innerHTML = "No suggestions found";
+
+}
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<input type="text" onkeyup="fetchSuggestions(this.value)">
+
+<div id="suggestions"></div>
+
+</body>
+
+</html>
+---------------------------------------------------------------------------------------------------------------
+Q.2) Create the following dataset in python and convert the categorical values into numeric format. Apply the apriori algorithm on the above dataset to generate the frequent itemsets and association rules. Repeat the process with different min_sup values.
+
+import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+
+Data = {
+'No':[1,2,3,4],
+'Company':['Tata','MG','Kia','Hyundai'],
+'Model':['Nexon','Astor','Seltos','Creta'],
+'Year':[2017,2021,2019,2015]
+}
+
+Df = pd.DataFrame(Data)
+
+Df['Company'] = pd.Categorical(Df['Company']).codes
+Df['Model'] = pd.Categorical(Df['Model']).codes
+
+Df = pd.get_dummies(Df)
+
+print(Df)
+
+Frequent_itemsets = apriori(Df, min_support=0.5, use_colnames=True)
+
+print(Frequent_itemsets)
+
+Rules = association_rules(Frequent_itemsets, metric="confidence", min_threshold=0.7)
+
+print(Rules)

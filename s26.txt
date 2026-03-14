@@ -1,0 +1,127 @@
+Q.1) Create employee table as follows EMP (eno, ename, designation, salary). Write Ajax program to select the employee’s name and print the selected employee’s details.
+
+HTML File
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Employee Details</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+<select id="employee-list">
+<option value="">Select an employee</option>
+<option value="John">John</option>
+<option value="Ravi">Ravi</option>
+<option value="Amit">Amit</option>
+</select>
+
+<div id="employee-details"></div>
+
+<script>
+
+$(document).ready(function(){
+
+$("#employee-list").change(function(){
+
+var selectedEmployee=$(this).val();
+
+$.ajax({
+url:"empdetails.php",
+type:"POST",
+data:{employeeName:selectedEmployee},
+dataType:"json",
+
+success:function(response){
+
+var detailsHtml="Employee Name: "+response.ename+"<br>"+
+"Designation: "+response.designation+"<br>"+
+"Salary: "+response.salary;
+
+$("#employee-details").html(detailsHtml);
+
+},
+
+error:function(xhr,status,error){
+console.log("Error:",error);
+}
+
+});
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
+
+--------------------------------------
+PHP File (empdetails.php)
+
+<?php
+
+$conn = pg_connect("host=localhost dbname=database_name user=username password=password");
+
+if(!$conn){
+die("Connection failed: ".pg_last_error());
+}
+
+$employeeName=$_POST['employeeName'];
+
+$sql="SELECT * FROM EMP WHERE ename='$employeeName'";
+$result=pg_query($conn,$sql);
+
+if(pg_num_rows($result)>0){
+
+$employee=pg_fetch_assoc($result);
+
+$response=array(
+"ename"=>$employee['ename'],
+"designation"=>$employee['designation'],
+"salary"=>$employee['salary']
+);
+
+echo json_encode($response);
+
+}else{
+echo "Employee not found";
+}
+
+pg_close($conn);
+
+?>
+----------------------------------------------------------------------------------------------------
+Q.2) Consider text paragraph. Remove special characters and digits. Generate summary using extractive summarization.
+
+import re
+from nltk.tokenize import sent_tokenize
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+Text = "Hello all, Welcome to Python Programming Academy. Python Programming Academy is a nice platform to learn new programming skills. It is difficult to get enrolled in this Academy."
+
+processed_text = re.sub(r"[^a-zA-Z\s]", "", Text)
+
+sentences = sent_tokenize(processed_text)
+
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(sentences)
+similarity_matrix = cosine_similarity(tfidf_matrix)
+
+N = 2
+top_sentences = sorted(range(len(similarity_matrix[1])), key=lambda i: similarity_matrix[1][i])[-N:]
+
+summary = ""
+for i in top_sentences:
+    summary += sentences[i] + " "
+
+print(summary)
+-----------------------
+If needed, run once before executing:
+
+import nltk
+nltk.download('punkt')

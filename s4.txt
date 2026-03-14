@@ -1,0 +1,149 @@
+Q.1) Write a PHP script to accept Employee details (Eno, Ename, Address) on first page. On second page accept earning (Basic, DA, HRA). On third page print Employee information (Eno, Ename, Address, Basic, DA, HRA, Total) [Use Session].
+
+<?php
+Session_start();
+
+If(isset($_POST['eno']) && isset($_POST['ename']) && isset($_POST['address'])) {
+
+$_SESSION['eno'] = $_POST['eno'];
+$_SESSION['ename'] = $_POST['ename'];
+$_SESSION['address'] = $_POST['address'];
+
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Employee Details</title>
+</head>
+
+<body>
+
+<h1>Employee Details</h1>
+
+<form method="POST" action="Secondpage.php">
+
+<label for="eno">Employee No:</label>
+<input type="text" id="eno" name="eno"><br><br>
+
+<label for="ename">Employee Name:</label>
+<input type="text" id="ename" name="ename"><br><br>
+
+<label for="address">Address:</label>
+<textarea id="address" name="address"></textarea><br><br>
+
+<input type="submit" value="Next">
+
+</form>
+
+</body>
+</html>
+-------------------------------------------------------------------------------------------
+<?php
+Session_start();
+
+If(isset($_POST['basic']) && isset($_POST['da']) && isset($_POST['hra'])) {
+
+$_SESSION['basic'] = $_POST['basic'];
+$_SESSION['da'] = $_POST['da'];
+$_SESSION['hra'] = $_POST['hra'];
+
+}
+?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Earnings</title>
+</head>
+
+<body>
+
+<h1>Earnings</h1>
+
+<form method="POST" action="thirdpage.php">
+
+<label for="basic">Basic:</label>
+<input type="text" id="basic" name="basic"><br><br>
+
+<label for="da">DA:</label>
+<input type="text" id="da" name="da"><br><br>
+
+<label for="hra">HRA:</label>
+<input type="text" id="hra" name="hra"><br><br>
+
+<input type="submit" value="Next">
+
+</form>
+
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------
+Thirdpage.php
+<?php
+Session_start();
+
+$total = $_SESSION['basic'] + $_SESSION['da'] + $_SESSION['hra'];
+?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Employee Information</title>
+</head>
+
+<body>
+
+<h1>Employee Information</h1>
+
+<p><strong>Employee No:</strong> <?php echo $_SESSION['eno']; ?></p>
+
+<p><strong>Employee Name:</strong> <?php echo $_SESSION['ename']; ?></p>
+
+<p><strong>Address:</strong> <?php echo $_SESSION['address']; ?></p>
+
+<p><strong>Basic:</strong> <?php echo $_SESSION['basic']; ?></p>
+
+<p><strong>DA:</strong> <?php echo $_SESSION['da']; ?></p>
+
+<p><strong>HRA:</strong> <?php echo $_SESSION['hra']; ?></p>
+
+<p><strong>Total Earnings:</strong> <?php echo $total; ?></p>
+
+</body>
+</html>
+-------------------------------------------------------------------------------------------
+Q.2) Build a simple linear regression model for Fish Species Weight Prediction.
+
+import pandas as pd
+import random
+from sklearn.linear_model import LinearRegression
+
+Fish_species = ['Tuna','Salmon','Trout','Bass','Sardine','Cod','Mackerel']
+
+Weights = []
+
+for i in range(50):
+    Fish_weight = []
+    for j in range(7):
+        Weight = random.randint(1,20)
+        Fish_weight.append(Weight)
+    Weights.append(Fish_weight)
+
+df = pd.DataFrame(Weights,columns=Fish_species)
+
+X = df.iloc[:,:-1]
+Y = df.iloc[:,-1]
+
+Model = LinearRegression()
+Model.fit(X,Y)
+
+New_fish = [[10,12,15,7,4,8]]
+Predicted_weight = Model.predict(New_fish)
+
+print("Predicted weight:",Predicted_weight)
+-------------------------------------------------------------------------------------------

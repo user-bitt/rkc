@@ -1,0 +1,75 @@
+Q.1) Write a JavaScript program to validate user name and password on onSubmit event.
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Validate User Name and Password</title>
+
+<script>
+
+function validateForm(){
+
+var username = document.forms["myForm"]["username"].value;
+var password = document.forms["myForm"]["password"].value;
+
+if(username == ""){
+alert("Username must be filled out");
+return false;
+}
+
+if(password == ""){
+alert("Password must be filled out");
+return false;
+}
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h2>Validate User Name and Password</h2>
+
+<form name="myForm" onsubmit="return validateForm()" method="post">
+
+<label for="username">Username:</label>
+<input type="text" id="username" name="username"><br><br>
+
+<label for="password">Password:</label>
+<input type="password" id="password" name="password"><br><br>
+
+<input type="submit" value="Submit">
+
+</form>
+
+</body>
+</html>
+---------------------------------------------------------------------------------
+Q.2) Download the movie_review.csv dataset from Kaggle and perform sentiment analysis on the dataset and create a wordcloud.
+
+import pandas as pd
+from textblob import TextBlob
+from wordcloud import WordCloud, STOPWORDS
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("movie_review.csv")
+
+df["Sentiment"] = df["Review"].apply(lambda x: TextBlob(x).sentiment.polarity)
+
+pos_df = df[df["Sentiment"] > 0.2]
+
+wordcloud = WordCloud(width=800,height=800,background_color="white",stopwords=STOPWORDS,min_font_size=10).generate(" ".join(pos_df["Review"]))
+
+plt.figure(figsize=(8,8))
+plt.imshow(wordcloud)
+plt.axis("off")
+plt.tight_layout(pad=0)
+
+plt.show()
+----------------------------------
+Install if needed:
+
+pip install pandas textblob wordcloud matplotlib

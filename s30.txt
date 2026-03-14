@@ -1,0 +1,88 @@
+Q1) Create an XML file “Bookcategory.xml” for Bookstore categories
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Bookstore>
+
+<Yoga>
+
+<Book>
+<Book_Title>Light on Yoga</Book_Title>
+<Book_Author>B.K.S. Iyengar</Book_Author>
+<Book_Price>20.99</Book_Price>
+</Book>
+
+<Book>
+<Book_Title>The Yoga Bible</Book_Title>
+<Book_Author>Christina Brown</Book_Author>
+<Book_Price>15.50</Book_Price>
+</Book>
+
+</Yoga>
+
+
+<Story>
+
+<Book>
+<Book_Title>The Alchemist</Book_Title>
+<Book_Author>Paulo Coelho</Book_Author>
+<Book_Price>12.99</Book_Price>
+</Book>
+
+<Book>
+<Book_Title>The Da Vinci Code</Book_Title>
+<Book_Author>Dan Brown</Book_Author>
+<Book_Price>14.75</Book_Price>
+</Book>
+
+</Story>
+
+
+<Technical>
+
+<Book>
+<Book_Title>Python for Data Science Handbook</Book_Title>
+<Book_Author>Jake VanderPlas</Book_Author>
+<Book_Price>28.99</Book_Price>
+</Book>
+
+<Book>
+<Book_Title>Cracking the Coding Interview</Book_Title>
+<Book_Author>Gayle Laakmann McDowell</Book_Author>
+<Book_Price>23.50</Book_Price>
+</Book>
+
+</Technical>
+
+</Bookstore>
+------------------------------------------------------------------------------------
+Q.2) Create dataset and apply Apriori algorithm
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+transactions = [
+['eggs','milk','bread'],
+['eggs','apple'],
+['milk','bread'],
+['apple','milk'],
+['milk','apple','bread']
+]
+
+te = TransactionEncoder()
+te_array = te.fit(transactions).transform(transactions)
+
+df = pd.DataFrame(te_array, columns=te.columns_)
+
+frequent_itemsets = apriori(df, min_support=0.4, use_colnames=True)
+
+rules = association_rules(frequent_itemsets, metric='confidence', min_threshold=0.7)
+
+print(frequent_itemsets)
+print(rules)
+
+
+-------------------------------
+pip install mlxtend pandas

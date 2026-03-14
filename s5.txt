@@ -1,0 +1,72 @@
+Q.1) Create XML file named "Item.xml" with item-name, item-rate, item-quantity. Store the details of 5 items of different types.
+
+<items>
+
+<item type="Electronics">
+<name>Television</name>
+<rate>500</rate>
+<quantity>10</quantity>
+</item>
+
+<item type="Clothing">
+<name>Shirt</name>
+<rate>50</rate>
+<quantity>20</quantity>
+</item>
+
+<item type="Grocery">
+<name>Rice</name>
+<rate>40</rate>
+<quantity>30</quantity>
+</item>
+
+<item type="Books">
+<name>Harry Potter and the Philosopher's Stone</name>
+<rate>20</rate>
+<quantity>50</quantity>
+</item>
+
+<item type="Sports">
+<name>Football</name>
+<rate>100</rate>
+<quantity>5</quantity>
+</item>
+
+</items>
+-------------------------------------------------------------------------------------------
+
+Q.2) Use the iris dataset. Write a Python program to view some basic statistical details like percentile, mean, std etc. of the species ‘iris-setosa’, ‘iris-versicolor’ and ‘iris-virginica’. Apply logistic regression on the dataset to identify different species (setosa, versicolor, virginica) of iris flowers given just 4 features: sepal and petal lengths and widths. Find the accuracy of the model.
+
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+iris = load_iris()
+
+df = pd.DataFrame(iris.data, columns=iris.feature_names)
+df['target'] = iris.target
+
+print("Statistical details of Iris-setosa:")
+print(df[df['target']==0].describe())
+
+print("Statistical details of Iris-versicolor:")
+print(df[df['target']==1].describe())
+
+print("Statistical details of Iris-virginica:")
+print(df[df['target']==2].describe())
+
+X = df.iloc[:,:-1]
+Y = df.iloc[:,-1]
+
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+Logreg = LogisticRegression()
+Logreg.fit(X_train, y_train)
+
+Y_pred = Logreg.predict(X_test)
+
+accuracy = accuracy_score(y_test, Y_pred)
+
+print("Accuracy of the logistic regression model:", accuracy)

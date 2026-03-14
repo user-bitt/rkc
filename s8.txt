@@ -1,0 +1,50 @@
+Q.1) Write a JavaScript to display message "Exams are near, have you started preparing for?" (use alert box) and accept any two numbers from user and display addition of two numbers (Use Prompt and Confirm box).
+
+alert("Exams are near, have you started preparing for?");
+
+let num1 = prompt("Enter first number:");
+let num2 = prompt("Enter second number:");
+
+let confirmMsg = `Are you sure you want to add ${num1} and ${num2}?`;
+
+let confirmResult = confirm(confirmMsg);
+
+if(confirmResult){
+
+num1 = parseInt(num1);
+num2 = parseInt(num2);
+
+let sum = num1 + num2;
+
+alert(`The sum of ${num1} and ${num2} is ${sum}.`);
+
+}
+
+---------------------------------------------------------------------------------------------------------
+Q.2) Download the groceries dataset. Write a python program to read the dataset and display its information. Preprocess the data (drop null values etc.). Convert the categorical values into numeric format. Apply the apriori algorithm on the above dataset to generate the frequent itemsets and association rules.
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+Df = pd.read_csv('market_basket.csv')
+
+Df.dropna(inplace=True)
+
+Te = TransactionEncoder()
+Te_ary = Te.fit(Df.values).transform(Df.values)
+
+Df = pd.DataFrame(Te_ary, columns=Te.columns_)
+
+Frequent_itemsets = apriori(Df, min_support=0.01, use_colnames=True)
+
+Rules = association_rules(Frequent_itemsets, metric="lift", min_threshold=1)
+
+print("Dataset information:")
+print(Df.info())
+
+print("\nFrequent itemsets:")
+print(Frequent_itemsets)
+
+print("\nAssociation rules:")
+print(Rules)

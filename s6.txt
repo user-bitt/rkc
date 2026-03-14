@@ -1,0 +1,65 @@
+Q.1) Write PHP script to read "book.xml" file into SimpleXML object. Display attributes and elements. (simple_xml_load_file() function)
+
+PHP Code
+<?php
+$xml = simplexml_load_file("book.xml");
+
+Echo "Book attributes:<br>";
+Echo "ISBN: ".$xml['isbn']."<br>";
+Echo "Publisher: ".$xml['publisher']."<br>";
+Echo "<br>";
+
+Echo "Book elements:<br>";
+Echo "Title: ".$xml->title."<br>";
+Echo "Author: ".$xml->author."<br>";
+Echo "Description: ".$xml->description."<br>";
+---------------------------------------------------------
+book.xml
+<?xml version="1.0"?>
+<book isbn="978-3-16-148410-0" publisher="Example Publisher">
+<title>Example Book</title>
+<author>John Doe</author>
+<description>This is an example book.</description>
+</book>
+
+-------------------------------------------------------------------------------------------
+Q.2) Create the following dataset in Python and convert the categorical values into numeric format. Apply the apriori algorithm on the above dataset to generate the frequent itemsets and association rules. Repeat the process with different min_sup values.
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+TID = {
+1:['bread','milk'],
+2:['bread','diaper','beer','eggs'],
+3:['milk','diaper','beer','coke'],
+4:['bread','milk','diaper','beer'],
+5:['bread','milk','diaper','coke']
+}
+
+Transactions = []
+
+for key, value in TID.items():
+    Transactions.append(value)
+
+Te = TransactionEncoder()
+Te_ary = Te.fit_transform(Transactions)
+
+Df = pd.DataFrame(Te_ary, columns=Te.columns_)
+
+Min_sup_values = [0.2,0.4,0.6]
+
+for min_sup in Min_sup_values:
+
+    Frequent_itemsets = apriori(Df, min_support=min_sup, use_colnames=True)
+
+    Rules = association_rules(Frequent_itemsets, metric="confidence", min_threshold=0.7)
+
+    print("Min_sup:",min_sup)
+    print("Frequent Itemsets:")
+    print(Frequent_itemsets)
+
+    print("Association Rules:")
+    print(Rules)
+
+-------------------------------------------------------------------------------------------

@@ -1,0 +1,119 @@
+Q.1) Write AJAX program to read contact.dat file and print the contents of the file in a tabular format when the user clicks on print button. Contact.dat file should contain srno, name, residence number, mobile number, address (enter at least 3 records in contact.dat file).
+
+HTML File
+-------------------
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact List</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="script.js"></script>
+
+</head>
+
+<body>
+
+<button id="printBtn">Print Contacts</button>
+
+<br><br>
+
+<table id="contactTable">
+
+<thead>
+<tr>
+<th>Sr.No.</th>
+<th>Name</th>
+<th>Residence Number</th>
+<th>Mobile Number</th>
+<th>Address</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+</body>
+</html>
+-------------------
+Ajax File (script.js)
+$(document).ready(function(){
+
+$("#printBtn").click(function(){
+
+$.ajax({
+
+url:"contact.dat",
+dataType:"text",
+
+success:function(data){
+
+var lines=data.split("\n");
+
+var tableRows="";
+
+for(var i=0;i<lines.length;i++){
+
+var columns=lines[i].split(",");
+
+if(columns.length==5){
+
+tableRows+="<tr>";
+
+for(var j=0;j<columns.length;j++){
+
+tableRows+="<td>"+columns[j]+"</td>";
+
+}
+
+tableRows+="</tr>";
+
+}
+
+}
+
+$("#contactTable tbody").html(tableRows);
+
+},
+
+error:function(jqXHR,textStatus,errorThrown){
+
+alert("Error:"+errorThrown);
+
+}
+
+});
+
+});
+
+});
+-----------------
+✅ Will this run?
+Yes, it will run correctly if all three files (HTML, script.js, contact.dat) are in the same folder and opened through a local server (XAMPP/WAMP/Live Server).
+-----------------------------------------------------------------------------------------------------------------
+
+Q.2) Create ‘heights-and-weights’ Dataset. Build a linear regression model by identifying independent and target variable. Split the variables into training and testing sets and print them. Build a simple linear regression model for predicting purchases.
+
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+Heights = np.random.normal(170,10,10)
+Weights = np.random.normal(70,5,10)
+
+dataset = pd.DataFrame({'Height':Heights,'Weight':Weights})
+
+X_train, X_test, y_train, y_test = train_test_split(dataset['Height'],dataset['Weight'],test_size=0.2,random_state=42)
+
+Lr_model = LinearRegression()
+Lr_model.fit(X_train.values.reshape(-1,1),y_train)
+
+print("Model Coefficients:",Lr_model.coef_)
+
+y_pred = Lr_model.predict(X_test.values.reshape(-1,1))
+
+print("Predictions:",y_pred)
+-----------------------------------------------------------------------------------------------------------------------------

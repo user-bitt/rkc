@@ -1,0 +1,130 @@
+Q.1) Create TEACHER table as follows TEACHER(tno, tname, qualification, salary). Write Ajax program to select a teachers name and print the selected teachers details.
+
+HTML / JS File
+<!DOCTYPE html>
+<html>
+<head>
+<title>Teacher Details</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+<select id="teacher-list">
+<option value="">--Select Teacher--</option>
+<option value="1">John Doe</option>
+<option value="2">Jane Smith</option>
+<option value="3">Bob Johnson</option>
+</select>
+
+<button id="submit-btn">Get Details</button>
+
+<div id="details"></div>
+
+<script>
+
+$(document).ready(function(){
+
+$("#submit-btn").click(function(){
+
+var tno = $("#teacher-list").val();
+
+if(tno == ""){
+alert("Please select a teacher.");
+return;
+}
+
+$.ajax({
+url:"teacherdetails.php",
+method:"POST",
+data:{tno:tno},
+
+success:function(response){
+$("#details").html(response);
+},
+
+error:function(xhr,status,error){
+console.log(xhr.responseText);
+}
+
+});
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
+
+---------------------------------
+PHP File (teacherdetails.php)
+<?php
+
+$servername="localhost";
+$username="username";
+$password="password";
+$dbname="database_name";
+
+$conn=mysqli_connect($servername,$username,$password,$dbname);
+
+if(!$conn){
+die("Connection failed: ".mysqli_connect_error());
+}
+
+if(isset($_POST['tno'])){
+
+$tno=$_POST['tno'];
+
+$sql="SELECT * FROM TEACHER WHERE tno='$tno'";
+
+$result=mysqli_query($conn,$sql);
+
+if(mysqli_num_rows($result)>0){
+
+$row=mysqli_fetch_assoc($result);
+
+echo "Teacher Name: ".$row['tname']."<br>";
+echo "Qualification: ".$row['qualification']."<br>";
+echo "Salary: ".$row['salary']."<br>";
+
+}
+else{
+echo "No data found.";
+}
+
+}
+
+mysqli_close($conn);
+
+?>
+
+-----------------------------------------------------------------------------------------------------------------
+Q.2) Create the following dataset in python and convert the categorical values into numeric format. Apply the apriori algorithm on the above dataset to generate the frequent itemsets and association rules. Repeat the process with different min_sup values.
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori
+
+TID = {
+1:["apple","mango","banana"],
+2:["mango","banana","cabbage","carrots"],
+3:["mango","banana","carrots"],
+4:["mango","carrots"]
+}
+
+Te = TransactionEncoder()
+Te_ary = Te.fit([TID[i] for i in TID]).transform([TID[i] for i in TID])
+
+Df = pd.DataFrame(Te_ary, columns=Te.columns_)
+
+Min_sup_values = [0.25,0.5,0.75]
+
+for min_sup in Min_sup_values:
+
+    Frequent_itemsets = apriori(Df, min_support=min_sup, use_colnames=True)
+
+    print("Frequent itemsets with min_sup =",min_sup)
+    print(Frequent_itemsets)
+    print("\n")

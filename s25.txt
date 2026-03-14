@@ -1,0 +1,88 @@
+Q.1) Write a script to create cricket.xml file with multiple elements as shown below and add multiple elements in cricket.xml of category, country="India"
+
+
+<?php
+
+$doc = new DOMDocument();
+
+$cricketTeam = $doc->createElement("CricketTeam");
+
+$teamAustralia = $doc->createElement("Team");
+$teamAustralia->setAttribute("country","Australia");
+
+$player1 = $doc->createElement("player","Steve Smith");
+$teamAustralia->appendChild($player1);
+
+$runs1 = $doc->createElement("runs","7090");
+$teamAustralia->appendChild($runs1);
+
+$wicket1 = $doc->createElement("wicket","17");
+$teamAustralia->appendChild($wicket1);
+
+$cricketTeam->appendChild($teamAustralia);
+
+$teamIndia = $doc->createElement("Team");
+$teamIndia->setAttribute("country","India");
+
+$player2 = $doc->createElement("player","Virat Kohli");
+$teamIndia->appendChild($player2);
+
+$runs2 = $doc->createElement("runs","12169");
+$teamIndia->appendChild($runs2);
+
+$wicket2 = $doc->createElement("wicket","4");
+$teamIndia->appendChild($wicket2);
+
+$category = $doc->createElement("category","Captain");
+$teamIndia->appendChild($category);
+
+$cricketTeam->appendChild($teamIndia);
+
+$doc->appendChild($cricketTeam);
+
+$doc->save("cricket.xml");
+
+echo "Elements added successfully";
+
+?>
+
+---------------------------------------------------------------------------------------------------------------
+Q.2) Consider the dataset: https://www.kaggle.com/datasets/seunggini/youtube-commentsfor-covid19-relatedvideos?select=covid_2021_1.csv
+
+Write a Python script for the following:
+
+i) Read the dataset and perform data cleaning operations on it.
+ii) Tokenize the comments in words.
+iii) Perform sentiment analysis and find the percentage of positive, negative and neutral comments
+
+import pandas as pd
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+df = pd.read_csv("covid_2021_1.csv")
+
+df.dropna(inplace=True)
+df.drop_duplicates(subset="Comment", inplace=True)
+
+nltk.download("punkt")
+df["tokens"] = df["Comment"].apply(nltk.word_tokenize)
+
+nltk.download("vader_lexicon")
+sia = SentimentIntensityAnalyzer()
+
+df["sentiment"] = df["Comment"].apply(lambda x: sia.polarity_scores(x)["compound"])
+
+total_comments = len(df)
+
+positive_comments = len(df[df["sentiment"] > 0])
+negative_comments = len(df[df["sentiment"] < 0])
+neutral_comments = len(df[df["sentiment"] == 0])
+
+positive_percentage = (positive_comments / total_comments) * 100
+negative_percentage = (negative_comments / total_comments) * 100
+neutral_percentage = (neutral_comments / total_comments) * 100
+
+print("Total Comments:", total_comments)
+print("Positive Comments:", positive_comments, "(", positive_percentage, "% )")
+print("Negative Comments:", negative_comments, "(", negative_percentage, "% )")
+print("Neutral Comments:", neutral_comments, "(", neutral_percentage, "% )")

@@ -1,0 +1,74 @@
+Q.1) Add a JavaScript file in CodeIgniter. The JavaScript code should check whether a number is positive or negative.
+
+HTML File
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Number Check</title>
+<script src="<?php echo base_url('js/numberCheck.js'); ?>"></script>
+</head>
+
+<body>
+
+<h1>Number Check</h1>
+
+<p>Enter a number to check:</p>
+
+<input type="number" id="num">
+
+<button onclick="checkNumber(document.getElementById('num').value)">Check</button>
+
+</body>
+
+</html>
+
+-----------------
+JavaScript File (numberCheck.js)
+function checkNumber(num){
+
+if(num > 0){
+alert("The number is positive.");
+}
+else if(num < 0){
+alert("The number is negative.");
+}
+else{
+alert("The number is zero.");
+}
+
+}
+----------------------------------------------------------------------------------------
+Q.2) Build a simple linear regression model for User Data.
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("user_data.csv")
+
+data.dropna(inplace=True)
+
+X = data['age'].values.reshape(-1,1)
+Y = data['income'].values.reshape(-1,1)
+
+X_train, X_test, y_train, y_test = train_test_split(X,Y,test_size=0.2,random_state=0)
+
+regressor = LinearRegression()
+regressor.fit(X_train,y_train)
+
+y_pred = regressor.predict(X_test)
+
+mse = mean_squared_error(y_test,y_pred)
+r2 = r2_score(y_test,y_pred)
+
+print("Mean squared error:",mse)
+print("R-squared:",r2)
+
+plt.scatter(X_test,y_test,color="gray")
+plt.plot(X_test,y_pred,color="red",linewidth=2)
+
+plt.show()

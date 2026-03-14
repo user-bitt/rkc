@@ -1,0 +1,117 @@
+Q1) Write a PHP script using AJAX to check whether username and password are valid (stored in database)
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+$(document).ready(function(){
+
+$("#login-form").submit(function(event){
+
+event.preventDefault()
+
+var username = $("#username").val()
+var password = $("#password").val()
+
+$.ajax({
+
+url:"check_login.php",
+type:"POST",
+
+data:{
+username:username,
+password:password
+},
+
+success:function(response){
+
+if(response == "valid"){
+window.location.href="dashboard.php"
+}
+else{
+alert("Invalid username or password")
+}
+
+}
+
+})
+
+})
+
+})
+
+</script>
+
+</head>
+
+<body>
+
+<h2>Login</h2>
+
+<form id="login-form">
+
+<label>Username:</label>
+<input type="text" name="username" id="username"><br><br>
+
+<label>Password:</label>
+<input type="password" name="password" id="password"><br><br>
+
+<input type="submit" value="Login">
+
+</form>
+
+</body>
+</html>
+
+-----------------------------------------------
+PHP File (check_login.php)
+
+<?php
+
+$conn = mysqli_connect("localhost","username","password","database_name");
+
+if(!$conn){
+die("Connection failed: ".mysqli_connect_error());
+}
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+$sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+$result = mysqli_query($conn,$sql);
+
+if(mysqli_num_rows($result) > 0){
+echo "valid";
+}
+else{
+echo "invalid";
+}
+
+mysqli_close($conn);
+
+?>
+--------------------------------------------------------------------------------------
+Q.2) Build a simple linear regression model for Car Dataset
+
+
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+mileage = [[10],[20],[30],[40],[50],[60],[70],[80]]
+price = [24,19,17,13,10,7,5,2]
+
+reg = LinearRegression().fit(mileage, price)
+
+print("Intercept:", reg.intercept_)
+print("Coefficient:", reg.coef_[0])
+
+new_mileage = [[25],[45],[65]]
+
+predicted_price = reg.predict(new_mileage)
+
+print("Predicted prices:", predicted_price)
