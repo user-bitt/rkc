@@ -27,24 +27,29 @@ import pandas as pd
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori, association_rules
 
-Df = pd.read_csv('market_basket.csv')
+Df = pd.read_csv('market_basket.csv', header=None)
 
-Df.dropna(inplace=True)
+transactions = []
+for i in range(len(Df)):
+    transactions.append([str(Df.values[i, j]) for j in range(len(Df.columns)) if str(Df.values[i, j]) != 'nan'])
 
 Te = TransactionEncoder()
-Te_ary = Te.fit(Df.values).transform(Df.values)
+Te_ary = Te.fit(transactions).transform(transactions)
 
-Df = pd.DataFrame(Te_ary, columns=Te.columns_)
+Df_encoded = pd.DataFrame(Te_ary, columns=Te.columns_).astype(bool)
 
-Frequent_itemsets = apriori(Df, min_support=0.01, use_colnames=True)
+Frequent_itemsets = apriori(Df_encoded, min_support=0.1, use_colnames=True)
 
-Rules = association_rules(Frequent_itemsets, metric="lift", min_threshold=1)
+if not Frequent_itemsets.empty:
+    Rules = association_rules(Frequent_itemsets, metric="lift", min_threshold=1)
+    
+    print("Dataset information:")
+    print(Df_encoded.info())
 
-print("Dataset information:")
-print(Df.info())
+    print("\nFrequent itemsets:")
+    print(Frequent_itemsets.head())
 
-print("\nFrequent itemsets:")
-print(Frequent_itemsets)
-
-print("\nAssociation rules:")
-print(Rules)
+    print("\nAssociation rules:")
+    print(Rules.head())
+else:
+    print("No frequent itemsets found! Check if your CSV file is formatted correctly.")
