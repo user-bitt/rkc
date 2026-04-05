@@ -68,18 +68,18 @@ import pandas as pd
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori, association_rules
 
-Df = pd.read_csv('Market_Basket_Optimisation.csv',header=None)
+Df = pd.read_csv('Market_Basket_Optimisation.csv', header=None)
 
-Df.dropna(inplace=True)
+transactions = [[str(item) for item in row if str(item) != 'nan'] for row in Df.values]
 
 Te = TransactionEncoder()
-Te_ary = Te.fit(Df.values).transform(Df.values)
+Te_ary = Te.fit(transactions).transform(transactions)
 
-Df = pd.DataFrame(Te_ary,columns=Te.columns_)
+Df = pd.DataFrame(Te_ary, columns=Te.columns_).astype(bool)
 
-Frequent_itemsets = apriori(Df,min_support=0.01,use_colnames=True)
+Frequent_itemsets = apriori(Df, min_support=0.05, use_colnames=True)
 
-Rules = association_rules(Frequent_itemsets,metric="lift",min_threshold=1)
+Rules = association_rules(Frequent_itemsets, metric="lift", min_threshold=1)
 
 print("Original Dataset:\n")
 print(Df.head())
@@ -89,8 +89,3 @@ print(Frequent_itemsets)
 
 print("\nAssociation Rules:\n")
 print(Rules)
-
----------------------------
-Required installation:
-
-pip install mlxtend
