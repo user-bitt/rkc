@@ -142,7 +142,7 @@ Y = df.iloc[:,-1]
 Model = LinearRegression()
 Model.fit(X,Y)
 
-New_fish = [[10,12,15,7,4,8]]
+New_fish = pd.DataFrame([[10,12,15,7,4,8]], columns=X.columns)
 Predicted_weight = Model.predict(New_fish)
 
 print("Predicted weight:",Predicted_weight)
