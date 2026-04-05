@@ -74,7 +74,7 @@ df['Gender'] = df['Gender'].map({'Male':1,'Female':0})
 from sklearn.model_selection import train_test_split
 
 X = df.iloc[:,1:4].values
-Y = df.iloc[:,4].values
+y = df.iloc[:,4].values
 
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3,random_state=0)
 
