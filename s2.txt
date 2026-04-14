@@ -61,13 +61,13 @@ if (isset($_POST['submit'])) {
     $fontcolor = $_POST['fontcolor'];
     $bgcolor   = $_POST['bgcolor'];
 
-    // Set the cookie values
+    
     setcookie('fontstyle', $fontstyle, time() + 86400);
     setcookie('fontsize',  $fontsize,  time() + 86400);
     setcookie('fontcolor', $fontcolor, time() + 86400);
     setcookie('bgcolor',   $bgcolor,   time() + 86400);
 
-    // Redirect to the next page
+    
     header("Location: thirdpage.php");
     exit();
 }
@@ -78,7 +78,6 @@ if (isset($_POST['submit'])) {
 Thirdpage.php
 <?php
 
-// Retrieve the cookie values
 
 $fontstyle = isset($_COOKIE['fontstyle']) ? $_COOKIE['fontstyle'] : 'Arial';
 $fontsize  = isset($_COOKIE['fontsize']) ? $_COOKIE['fontsize'] : '12';
