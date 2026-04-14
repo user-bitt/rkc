@@ -1,5 +1,6 @@
 Q.1) Write a PHP script to accept Employee details (Eno, Ename, Address) on first page. On second page accept earning (Basic, DA, HRA). On third page print Employee information (Eno, Ename, Address, Basic, DA, HRA, Total) [Use Session].
 
+firstpaage.php
 <?php
 Session_start();
 
@@ -40,6 +41,7 @@ $_SESSION['address'] = $_POST['address'];
 </body>
 </html>
 -------------------------------------------------------------------------------------------
+seccondpage.php
 <?php
 Session_start();
 
